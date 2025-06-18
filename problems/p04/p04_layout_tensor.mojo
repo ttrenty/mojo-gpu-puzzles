@@ -11,6 +11,25 @@ alias dtype = DType.float32
 alias layout = Layout.row_major(SIZE, SIZE)
 
 
+# Row-major: Elements in a row are contiguous
+# # [1 2 3]
+# # [4 5 6] -> [1 2 3 4 5 6]
+# layout_row = Layout.row_major(2, 3)
+
+
+# Column-major: Elements in a column are contiguous
+# # [1 2 3]
+# # [4 5 6] -> [1 4 2 5 3 6]
+# layout_col = Layout.col_major(2, 3)
+
+
+# Tiled: Elements grouped in tiles for cache efficiency
+# # [[1 2] [3 4]] in 2x2 tiles
+# layout_tiled = Layout.tiled[2, 2](4, 4)
+
+# see book/src/puzzle_04/intro.mojo for simple LayoutTensor example
+
+
 fn add_10_2d(
     output: LayoutTensor[mut=True, dtype, layout],
     a: LayoutTensor[mut=True, dtype, layout],
@@ -19,6 +38,10 @@ fn add_10_2d(
     row = thread_idx.y
     col = thread_idx.x
     # FILL ME IN (roughly 2 lines)
+    # if row < size and col < size: # not needed with LayoutTensor
+    #      output[row, col] = a[row, col] + 10.0
+
+    output[row, col] = a[row, col] + 10.0
 
 
 # ANCHOR_END: add_10_2d_layout_tensor
